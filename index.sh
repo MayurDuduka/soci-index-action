@@ -18,30 +18,30 @@ LATEST_VERSION=$(echo "$response" | jq -r '.tag_name')
 
 
 if [[ "$RUNNER_OS" == "Linux" ]]; then
-    if [[ "$RUNNER_ARCHITECTURE" == "x64" ]]; then
+    if [[ "${{ runner.arch }}" == "x64" ]]; then
         log_info "Runner OS: Linux (x64)"
         wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz && tar -xvf ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz && cp ./soci /usr/local/bin && cp ./soci-snapshotter-grpc /usr/local/bin
-    elif [[ "$RUNNER_OS" == "ARM64" ]]; then
+    elif [[ "${{ runner.arch }}" == "ARM64" ]]; then
         log_info "Runner OS: Linux (ARM64)"
         wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz && tar -xvf ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz && cp ./soci /usr/local/bin && cp ./soci-snapshotter-grpc /usr/local/bin
     else
-        log_error "Runner OS: Linux (Unknown Architecture: $RUNNER_ARCHITECTURE)"
+        log_error "Runner OS: Linux (Unknown Architecture: ${{ runner.arch }})"
         exit 1
     fi
 elif [[ "$RUNNER_OS" == "Windows" ]]; then
-    if [[ "$RUNNER_ARCHITECTURE" == "x64" ]]; then
+    if [[ "${{ runner.arch }}" == "x64" ]]; then
         log_info "Runner OS: Windows (x64)"
         exit 1
     else
-        log_error "Runner OS: Windows (Unknown Architecture: $RUNNER_ARCHITECTURE)"
+        log_error "Runner OS: Windows (Unknown Architecture: ${{ runner.arch }})"
         exit 1
     fi
 elif [[ "$RUNNER_OS" == "macOS" ]]; then
-    if [[ "$RUNNER_ARCHITECTURE" == "x64" ]]; then
+    if [[ "${{ runner.arch }}" == "x64" ]]; then
         log_info "Runner OS: macOS (x64)"
         exit 1
     else
-        log_error "Runner OS: macOS (Unknown Architecture: $RUNNER_ARCHITECTURE)"
+        log_error "Runner OS: macOS (Unknown Architecture: ${{ runner.arch }})"
         exit 1
     fi
 else
