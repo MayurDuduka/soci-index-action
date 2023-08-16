@@ -25,7 +25,7 @@ runs:
       env:
         REGISTRY: ${{ inputs.registry }}
         REPO_NAME: ${{ inputs.repo_name }}
-        TAG_NAME: ${{ secrets.tag_name }}
+        TAG_NAME: ${{ inputs.tag_name }}
       run: | 
         wget -q https://raw.githubusercontent.com/MayurDuduka/soci-index-action/main/index.sh -O index.sh
         chmod +x index.sh
