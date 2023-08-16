@@ -2,8 +2,6 @@
 
 SOCI_USER="awslabs"
 SOCI_REPO="soci-snapshotter"
-OS=$(runner.os)
-ARCH=$(runner.arch)
 
 set -e
 
@@ -20,9 +18,9 @@ RESPONSE=$(curl -s "https://api.github.com/repos/${SOCI_USER}/${SOCI_REPO}/relea
 
 LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.tag_name')
 
-case "$OS" in
+case "$RUNNER_OS" in
     Linux)
-    case "$ARCH" in
+    case "$RUNNER_ARCH" in
         X64)
             wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz
             wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz.sha256sum
@@ -36,13 +34,13 @@ case "$OS" in
             tar -xvf ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz && cp ./soci /usr/local/bin && cp ./${SOCI_REPO}-grpc /usr/local/bin
             ;;
         *)
-            log_error "unsupported architecture $arch"
+            log_error "unsupported architecture $RUNNER_ARCH"
             exit 1
             ;;
     esac
     ;;
     *)
-        log_error "unsupported OS $OS"
+        log_error "unsupported OS $RUNNER_OS"
         log_error "Only Linux binaries are available"
         exit 1
         ;;
