@@ -22,12 +22,7 @@ runs:
         wget -q https://raw.githubusercontent.com/MayurDuduka/soci-index-action/main/index.sh -O index.sh
         chmod +x index.sh
         bash index.sh
-        rm index.sh
-        ls -al
-        pwd
-# runs:
-#   using: 'docker'
-#   image: 'Dockerfile'
-#   args:
-#     - ${{ inputs.org_name }}
-#     - ${{ inputs.repo_name }}
+        rm index.sh THIRD_PARTY_LICENSES NOTICE.md "${release_archive}" "${release_shasums}" soci-snapshotter-grpc
+    - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
+      run: echo "${{ inputs.install-dir }}" >> $GITHUB_PATH
+      shell: bash
