@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 SOCI_USER="awslabs"
 SOCI_REPO="soci-snapshotter"
