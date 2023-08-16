@@ -5,6 +5,8 @@ __pycache__/
 terraform-destroy-on-action-main
 docker-build-push.sh
 .github
+newrelic-prometheus-configurator-main
+prometheus-operator
 
 # C extensions
 *.so
