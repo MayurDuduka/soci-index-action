@@ -62,10 +62,14 @@ rm index.sh THIRD_PARTY_LICENSES NOTICE.md ${SOCI_REPO}-grpc
 
 # sudo soci create docker.io/library/nginx:latest
 
-sudo ctr i pull --user AWS:$REGISTRY_PASSWORD $REGISTRY/$REGISTRY_NAME:$REPOSITORY_TAG
+info_log "registry name: $REGISTRY"
+info_log "repo name: $REPO_NAME"
+info_log "tag: $REPOSITORY_TAG"
+
+sudo ctr i pull --user AWS:$REGISTRY_PASSWORD $REGISTRY/$REPO_NAME:$REPOSITORY_TAG
 
 soci create $REGISTRY/$REGISTRY_NAME:$REPOSITORY_TAG
 
-soci push --user AWS:$REGISTRY_PASSWORD --platform linux/amd64 $REGISTRY/$REGISTRY_NAME:$REPOSITORY_TAG
+soci push --user AWS:$REGISTRY_PASSWORD --platform linux/amd64 $REGISTRY/$REPO_NAME:$REPOSITORY_TAG
 
-# soci push --user AWS:$REGISTRY_PASSWORD --platform linux/amd64 $REGISTRY_NAME/$REPOSITORY_TAG
+# soci push --user AWS:$REGISTRY_PASSWORD --platform linux/amd64 $REGISTRY/$REPO_NAME:$REPOSITORY_TAG
