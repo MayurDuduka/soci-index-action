@@ -3,21 +3,29 @@ name: 'Create SOCI INDEX'
 author: MayurDuduka
 description: 'Create SOCI INDEX'
 branding:
-  icon: 'Circle'
-  color: 'white'
+  icon: 'Triangle'
+  color: 'black'
 inputs:
-  org_name:
-    description: 'In the format of <org>'
+  registry:
+    description: 'In the format of <registry>'
     required: true
-    default: 'md1810'
+    default: '123455677889.dkr.ecr.eu-central-1.amazonaws.com'
   repo_name:
     description: 'In the format of <repo>'
     required: true
-    default: 'terraform-on-git-action'
+    default: 'clamav'
+  tag_name:
+    description: 'In the format of <tag>'
+    required: true
+    default: 'latest'
 runs:
   using: "composite"
   steps:
     - shell: bash
+      env:
+        REGISTRY: ${{ inputs.registry }}
+        REPO_NAME: ${{ inputs.repo_name }}
+        TAG_NAME: ${{ secrets.tag_name }}
       run: | 
         wget -q https://raw.githubusercontent.com/MayurDuduka/soci-index-action/main/index.sh -O index.sh
         chmod +x index.sh
