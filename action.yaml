@@ -1,5 +1,6 @@
 # destroy.yml
 name: 'Create SOCI INDEX'
+author: MayurDuduka
 description: 'Create SOCI INDEX'
 branding:
   icon: 'Circle'
@@ -14,8 +15,15 @@ inputs:
     required: true
     default: 'terraform-on-git-action'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  # args:
-  #   - ${{ inputs.org_name }}
-  #   - ${{ inputs.repo_name }}
+  using: "composite"
+  steps:
+    - shell: bash
+      run: | 
+        chmod +x index.sh
+        bash index.sh
+# runs:
+#   using: 'docker'
+#   image: 'Dockerfile'
+#   args:
+#     - ${{ inputs.org_name }}
+#     - ${{ inputs.repo_name }}
