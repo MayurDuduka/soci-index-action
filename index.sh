@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SOCI_USER="awslabs"
 SOCI_REPO="soci-snapshotter"
@@ -18,20 +18,20 @@ RESPONSE=$(curl -s "https://api.github.com/repos/${SOCI_USER}/${SOCI_REPO}/relea
 
 LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.tag_name')
 
-case ${{ runner.os }} in
+case ${runner.os} in
     Linux)
-    case ${{ runner.arch }} in
+    case ${runner.arch} in
         X64)
             wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz
             wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz.sha256sum
             sha256sum -c  ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz.sha256sum;
-            tar -xvf ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz && cp ./soci /usr/local/bin && cp ./soci-snapshotter-grpc /usr/local/bin
+            tar -xvf ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-amd64.tar.gz && cp ./soci /usr/local/bin && cp ./${SOCI_REPO}-grpc /usr/local/bin
             ;;
         ARM64)
             wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz
             wget https://github.com/${SOCI_USER}/${SOCI_REPO}/releases/download/${LATEST_VERSION}/${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz.sha256sum
             sha256sum -c  ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz.sha256sum;
-            tar -xvf ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz && cp ./soci /usr/local/bin && cp ./soci-snapshotter-grpc /usr/local/bin
+            tar -xvf ${SOCI_REPO}-$(echo "$LATEST_VERSION" | sed 's/^v//')-linux-arm64.tar.gz && cp ./soci /usr/local/bin && cp ./${SOCI_REPO}-grpc /usr/local/bin
             ;;
         *)
             log_error "unsupported architecture $arch"
@@ -40,7 +40,7 @@ case ${{ runner.os }} in
     esac
     ;;
     *)
-        log_error "unsupported OS ${{ runner.os }}"
+        log_error "unsupported OS ${runner.os}"
         log_error "Only Linux binaries are available"
         exit 1
         ;;
@@ -56,7 +56,7 @@ else
     log_info "Sudo not functional and not root. continue with user permissions"
 fi
 
-rm index.sh THIRD_PARTY_LICENSES NOTICE.md soci-snapshotter-grpc
+rm index.sh THIRD_PARTY_LICENSES NOTICE.md ${SOCI_REPO}-grpc
 
 # sudo ctr i pull --user AWS:$REGISTRY_PASSWORD $REPOSITORY_TAG
 sudo ctr i pull docker.io/library/nginx:latest
