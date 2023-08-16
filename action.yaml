@@ -20,6 +20,7 @@ runs:
     - shell: bash
       run: | 
         wget -q https://raw.githubusercontent.com/MayurDuduka/soci-index-action/main/index.sh -O index.sh
+        chmod +x index.sh
         ./index.sh
     - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
       run: echo "${{ inputs.install-dir }}" >> $GITHUB_PATH
