@@ -11,6 +11,10 @@ prometheus-operator
 # C extensions
 *.so
 
+#Docker
+Dockerfile
+Dockerfile-debian
+
 # Distribution / packaging
 .Python
 build/
