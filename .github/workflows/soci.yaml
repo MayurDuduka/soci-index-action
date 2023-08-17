@@ -1,7 +1,6 @@
 name: SOCI-INDEX
 on:
   workflow_dispatch:
-  push:
 
 jobs:
   compile:
