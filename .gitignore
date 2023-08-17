@@ -4,7 +4,6 @@ __pycache__/
 *$py.class
 terraform-destroy-on-action-main
 docker-build-push.sh
-.github
 newrelic-prometheus-configurator-main
 prometheus-operator
 

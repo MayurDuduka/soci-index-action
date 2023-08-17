@@ -1,0 +1,19 @@
+name: release version
+on:
+  workflow_dispatch:
+    inputs:
+      version-number:
+        required: true
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: get versions
+        uses: rusty-actions/release-versions@v1
+        with:
+          tag: "${{ github.event.inputs.version-number }}"
+          prefix: "v"
