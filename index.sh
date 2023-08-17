@@ -58,8 +58,11 @@ fi
 
 rm index.sh THIRD_PARTY_LICENSES NOTICE.md ${SOCI_REPO}-grpc
 
+info_log "Pulling Docker image using CTR"
 sudo ctr i pull --user $REGISTRY_USER:$REGISTRY_PASSWORD $REGISTRY/$REPO_NAME:$REPOSITORY_TAG
 
+info_log "Creating SOCI index for Docker image using SOCI"
 sudo soci create $REGISTRY/$REGISTRY_NAME:$REPOSITORY_TAG
 
-sudo push --user $REGISTRY_USER:$REGISTRY_PASSWORD $REGISTRY/$REPO_NAME:$REPOSITORY_TAG
+info_log "Pushing SOCI Docker image using SOCI"
+sudo soci push --user $REGISTRY_USER:$REGISTRY_PASSWORD $REGISTRY/$REPO_NAME:$REPOSITORY_TAG
