@@ -13,7 +13,7 @@ inputs:
   registry_user:
     description: 'In the format of <registry_user>'
     required: true
-    default: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    default: 'AWS'
   registry_password:
     description: 'In the format of <registry_password>'
     required: true

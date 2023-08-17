@@ -65,8 +65,8 @@ rm index.sh THIRD_PARTY_LICENSES NOTICE.md ${SOCI_REPO}-grpc
 info_log "registry name: $REGISTRY"
 info_log "repo name: $REPO_NAME"
 info_log "tag: $REPOSITORY_TAG"
-info_log "tag: $REGISTRY_USER"
-info_log "tag: $REGISTRY_PASSWORD"
+info_log "USER: $REGISTRY_USER"
+info_log "Password: $REGISTRY_PASSWORD"
 
 sudo ctr i pull --user $REGISTRY_USER:$REGISTRY_PASSWORD $REGISTRY/$REPO_NAME:$REPOSITORY_TAG
 
