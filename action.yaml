@@ -1,7 +1,7 @@
 # destroy.yml
 name: 'Create SOCI INDEX'
-author: MayurDuduka
-description: 'Create SOCI INDEX'
+author: IAMOPS
+description: 'Create SOCI INDEX of ECR Docker image and Push back to ECR'
 branding:
   icon: 'Triangle'
   color: 'black'
@@ -12,7 +12,7 @@ inputs:
     default: '123455677889.dkr.ecr.eu-central-1.amazonaws.com'
   registry_user:
     description: 'In the format of <registry_user>'
-    required: true
+    required: false
     default: 'AWS'
   registry_password:
     description: 'In the format of <registry_password>'
