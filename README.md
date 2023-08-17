@@ -32,11 +32,13 @@ jobs:
           mask-password: 'true'
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - run: echo "__AWS_REGION__=$(echo "${{ secrets.AWS_REGION }}" | tr '-' '_')" >> $GITHUB_ENV
       - name: Create SOCI INDEX
         uses: MayurDuduka/soci-index-action@v4.4
         with:
           registry: ${{ steps.login-ecr.outputs.registry }}
-          registry_password: ${{ steps.login-ecr.outputs[format('docker_password_{0}_dkr_ecr_eu_central_1_amazonaws_com', steps.login-aws.outputs.aws-account-id)] }}
+          registry_user: ${{ steps.login-ecr.outputs[format('docker_username_{0}_dkr_ecr_{1}_amazonaws_com', steps.login-aws.outputs.aws-account-id, env.__AWS_REGION__)] }}
+          registry_password: ${{ steps.login-ecr.outputs[format('docker_password_{0}_dkr_ecr_{1}_amazonaws_com', steps.login-aws.outputs.aws-account-id, env.__AWS_REGION__)] }}
           repo_name: 'ECR_Repository_NAME'
           tag_name: 'TAG_NAME'
 ```
