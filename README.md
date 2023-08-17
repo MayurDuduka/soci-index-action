@@ -4,38 +4,44 @@ soci-index-action
 ## **USE Example**
 
 ```
+name: SOCI-INDEX
+on:
+  workflow_dispatch:
+  push:
+
 jobs:
-  issue_parser:
+  compile:
     runs-on: ubuntu-latest
-    name: Terraform destroy
+    permissions:
+      contents: write
+      id-token: write
     steps:
-    - name: Checkout repo
-        uses: actions/checkout@v3
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2 # More information on this action can be found below in the 'AWS Credentials' section
-      with:
-        role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role
-        aws-region: aws-region-1
-
-    - name: Login to Amazon ECR
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        id: login-aws
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+        #   role-to-assume:  ${{ secrets.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
           mask-password: 'true'
-          
-    - name: Build, tag, and push docker image to Amazon ECR
-      env:
-        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: my-ecr-repo
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
-    - uses: MayurDuduka/soci-index-action@v1.0
-      with:
-        registry: ${{ steps.login-ecr.outputs.registry }}
-        repo_name: 'clamav:anti-v2'
-        tag_name: ${{ github.sha }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Create SOCI INDEX
+        uses: MayurDuduka/soci-index-action@v4.4
+        with:
+          registry: ${{ steps.login-ecr.outputs.registry }}
+          registry_password: ${{ steps.login-ecr.outputs[format('docker_password_{0}_dkr_ecr_eu_central_1_amazonaws_com', steps.login-aws.outputs.aws-account-id)] }}
+          repo_name: 'ECR_Repository_NAME'
+          tag_name: 'TAG_NAME'
 ```
+
+References:
+- https://aws.amazon.com/blogs/aws/aws-fargate-enables-faster-container-startup-using-seekable-oci/
+- https://aws.amazon.com/about-aws/whats-new/2023/07/aws-fargate-container-startup-seekable-oci/
+- https://aws.amazon.com/about-aws/whats-new/2022/09/introducing-seekable-oci-lazy-loading-container-images/
