@@ -6,6 +6,7 @@ terraform-destroy-on-action-main
 docker-build-push.sh
 newrelic-prometheus-configurator-main
 prometheus-operator
+temp
 
 # C extensions
 *.so

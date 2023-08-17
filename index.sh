@@ -14,6 +14,21 @@ else
     alias error_log="echo \"ERROR:\""
 fi
 
+REQUIRED_ENV_VARS=("SOCI_USER" "SOCI_REPO" "REGISTRY" "REGISTRY_USER" "REGISTRY_PASSWORD" "REPO_NAME" "REPOSITORY_TAG")
+
+check_empty() {
+    if [ -z "${!1}" ]; then
+        error_log "Error: $1 is empty. Exiting."
+        exit 1
+    fi
+}
+
+for var in "${REQUIRED_ENV_VARS[@]}"; do
+    check_empty "$var"
+done
+
+info_log "All required environment variables are set."
+
 RESPONSE=$(curl -s "https://api.github.com/repos/${SOCI_USER}/${SOCI_REPO}/releases/latest")
 
 LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.tag_name')
