@@ -10,6 +10,10 @@ inputs:
     description: 'In the format of <registry>'
     required: true
     default: '123455677889.dkr.ecr.eu-central-1.amazonaws.com'
+  registry_user:
+    description: 'In the format of <registry_user>'
+    required: true
+    default: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
   registry_password:
     description: 'In the format of <registry_password>'
     required: true
@@ -28,6 +32,7 @@ runs:
     - shell: bash
       env:
         REGISTRY: ${{ inputs.registry }}
+        REGISTRY_USER: ${{ inputs.registry_user }}
         REGISTRY_PASSWORD: ${{ inputs.registry_password }}
         REPO_NAME: ${{ inputs.repo_name }}
         REPOSITORY_TAG: ${{ inputs.tag_name }}
